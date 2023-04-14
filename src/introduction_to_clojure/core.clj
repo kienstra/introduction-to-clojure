@@ -97,9 +97,7 @@
          (add-to-bowl)
          (release))
        :ok)
-     (do
-       (println "This function only works on scooped ingredients. You asked me to scoop" ingredient)
-       :error)))
+     (error (println "This function only works on scooped ingredients. You asked me to scoop" ingredient))))
   ([ingredient]
    (add-scooped ingredient 1)))
 
@@ -111,9 +109,7 @@
          (grab ingredient)
          (add-to-bowl))
        :ok)
-     (do
-       (println "This function only works on simple ingredients. You asked me to add" ingredient)
-       :error)))
+     (error (println "This function only works on simple ingredients. You asked me to add" ingredient))))
   ([ingredient]
    (add-simple ingredient 1)))
 
@@ -129,9 +125,7 @@
      (simple? ingredient)
      (add-simple ingredient amount)
      :else
-     (do
-       (println "I do not know the ingredient" ingredient)
-       :error))))
+     (error (println "I do not know the ingredient" ingredient)))))
 
 (defn bake-cake []
   (add :egg 2)
