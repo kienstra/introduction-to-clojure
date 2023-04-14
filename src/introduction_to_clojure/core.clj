@@ -71,9 +71,9 @@
 (defn simple? [ingredient]
   (= ingredient :butter))
 
-(defn add-scooped [ingredient]
+(defn add-scooped [ingredient n]
   (if (scooped? ingredient)
-    (do
+    (dotimes [_ n]
       (grab :cup)
       (scoop ingredient)
       (add-to-bowl)
@@ -82,9 +82,9 @@
       (println "This function only works on scooped ingredients. You asked me to scoop" ingredient)
       :error)))
 
-(defn add-squeezed [ingredient]
+(defn add-squeezed [ingredient n]
   (if (squeezed? ingredient)
-    (do
+    (dotimes [_ n]
       (grab ingredient)
       (squeeze)
       (add-to-bowl))
@@ -92,33 +92,33 @@
       (println "This function only works on squeezed ingredients. You asked me to squeeze" ingredient)
       :error)))
 
-(defn add-simple [ingredient]
+(defn add-simple [ingredient n]
   (if (simple? ingredient)
-    (do
+    (dotimes [_ n]
       (grab ingredient)
       (add-to-bowl))
     (do
       (println "This function only works on simple ingredients. You asked me to add" ingredient)
       :error)))
 
-(defn add [ingredient]
+(defn add [ingredient n]
   (cond
     (squeezed? ingredient)
-    (add-squeezed ingredient)
+    (add-squeezed ingredient n)
     (scooped? ingredient)
-    (add-scooped ingredient)
+    (add-scooped ingredient n)
     (simple? ingredient)
-    (add-simple ingredient)
+    (add-simple ingredient n)
     :else
     (do
       (println "I do not know the ingredient" ingredient)
       :error)))
 
 (defn bake-cake []
-  (add-eggs 2)
-  (add-flour-cups 2)
-  (add-milk)
-  (add-sugar)
+  (add :egg 2)
+  (add :flour 2)
+  (add :milk 1)
+  (add :sugar 1)
   (mix)
   (pour-into-pan)
   (bake-pan 25)
