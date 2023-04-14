@@ -72,3 +72,9 @@
 (defn simple? [ingredient]
   (= ingredient :butter))
 
+(defn add-squeezed [ingredient]
+  (if (squeezed? ingredient)
+    (add ingredient)
+    (do
+      (println ingredient "is not squeezable")
+      :error)))
