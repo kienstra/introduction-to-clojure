@@ -72,9 +72,33 @@
 (defn simple? [ingredient]
   (= ingredient :butter))
 
+(defn add-scooped [ingredient]
+  (if (scooped? ingredient)
+    (do
+      (grab :cup)
+      (scoop ingredient)
+      (add-to-bowl)
+      (release))
+    (do
+      (println ingredient "is not scoopable")
+      :error)))
+
 (defn add-squeezed [ingredient]
   (if (squeezed? ingredient)
-    (add ingredient)
+    (do
+      (grab ingredient)
+      (squeeze)
+      (add-to-bowl))
     (do
       (println ingredient "is not squeezable")
+      :error)))
+
+(defn add-simple [ingredient]
+  (if (simple? ingredient)
+    (do
+      (grab ingredient)
+      (add-to-bowl)
+      )
+    (do
+      (println ingredient "is not simple")
       :error)))
