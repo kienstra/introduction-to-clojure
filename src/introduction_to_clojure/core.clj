@@ -6,6 +6,11 @@
   (squeeze)
   (add-to-bowl))
 
+(defn add-eggs [n]
+  (dotimes [_ n]
+    (add-egg))
+  :ok)
+
 (defn add-flour []
   (grab :cup)
   (scoop :flour)
@@ -24,21 +29,26 @@
   (add-to-bowl)
   (release))
 
-(defn add-butter []
-  (grab :butter)
-  (add-to-bowl))
+(defn add-flour-cups [n]
+  (dotimes [_ n]
+    (add-flour))
+  :ok)
 
-(defn bake-cake []
-  (add :egg)
-  (add :egg)
-  (add :flour)
-  (add :flour)
-  (add :milk)
-  (add :sugar)
-  (mix)
-  (pour-into-pan)
-  (bake-pan 25)
-  (cool-pan))
+(defn add-milk-cups [n]
+  (dotimes [_ n]
+    (add-milk))
+  :ok)
+
+(defn add-sugar-cups [n]
+  (dotimes [_ n]
+    (add-sugar))
+  :ok)
+
+(defn add-butter [n]
+  (dotimes [_ n]
+    (grab :butter)
+    (add-to-bowl))
+  :ok)
 
 (defn scooped? [ingredient]
   (cond
@@ -99,3 +109,13 @@
     (do
       (println "I do not know the ingredient" ingredient)
       :error)))
+
+(defn bake-cake []
+  (add-eggs 2)
+  (add-flour-cups 2)
+  (add-milk)
+  (add-sugar)
+  (mix)
+  (pour-into-pan)
+  (bake-pan 25)
+  (cool-pan))
