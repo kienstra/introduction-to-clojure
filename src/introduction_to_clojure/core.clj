@@ -83,9 +83,7 @@
          (squeeze)
          (add-to-bowl))
        :ok)
-     (do
-       (println "This function only works on squeezed ingredients. You asked me to squeeze" ingredient)
-       :error)))
+     (error (println "This function only works on squeezed ingredients. You asked me to squeeze" ingredient))))
   ([ingredient]
    (add-squeezed ingredient 1)))
 
