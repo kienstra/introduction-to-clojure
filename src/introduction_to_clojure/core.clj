@@ -45,19 +45,6 @@
 (defn simple? [ingredient]
   (= ingredient :butter))
 
-(defn add [ingredient]
-  (cond
-    (squeezed? ingredient)
-    (add-squeezed ingredient)
-    (scooped? ingredient)
-    (add-scooped ingredient)
-    (simple? ingredient)
-    (add-simple ingredient)
-    :else
-    (do
-      (println "I do not know the ingredient" ingredient)
-      :error)))
-
 (defn add-eggs [n]
   (dotimes [e n]
     (add-egg))
@@ -82,16 +69,6 @@
   (dotimes [e n]
     (add-butter))
   :ok)
-
-(defn bake-cake []
-  (add-eggs 2)
-  (add-flour-cups 2)
-  (add-milk-cups 1)
-  (add-sugar-cups 1)
-  (mix)
-  (pour-into-pan)
-  (bake-pan 25)
-  (cool-pan))
 
 (defn add-squeezed
   ([ingredient amount]
@@ -137,3 +114,29 @@
         :error)))
   ([ingredient]
     (add-simple ingredient 1)))
+
+(defn add
+  ([ingredient]
+   (add ingredient 1))
+  ([ingredient amount]
+   (cond
+     (squeezed? ingredient)
+     (add-squeezed ingredient amount)
+     (scooped? ingredient)
+     (add-scooped ingredient amount)
+     (simple? ingredient)
+     (add-simple ingredient amount)
+     :else
+     (do
+       (println "I do not know the ingredient" ingredient)
+       :error))))
+
+(defn bake-cake []
+  (add :egg 2)
+  (add :flour 2)
+  (add :milk)
+  (add :sugar)
+  (mix)
+  (pour-into-pan)
+  (bake-pan 25)
+  (cool-pan))
