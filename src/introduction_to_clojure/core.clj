@@ -44,10 +44,14 @@
     (add-sugar))
   :ok)
 
-(defn add-butter [n]
+(defn add-butter []
+  (grab :butter)
+  (add-to-bowl)
+  :ok)
+
+(defn add-butters [n]
   (dotimes [_ n]
-    (grab :butter)
-    (add-to-bowl))
+    (add-butter))
   :ok)
 
 (defn scooped? [ingredient]
