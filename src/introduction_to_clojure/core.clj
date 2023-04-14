@@ -140,3 +140,13 @@
   (pour-into-pan)
   (bake-pan 25)
   (cool-pan))
+
+(defn bake-cookies []
+  (add :egg)
+  (add :flour)
+  (add :sugar)
+  (add :butter)
+  (mix)
+  (pour-into-pan)
+  (bake-pan 30)
+  (cool-pan))
