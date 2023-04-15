@@ -32,22 +32,19 @@
   (grab :butter)
   (add-to-bowl))
 
-(defn scooped? [ingredient]
-  (cond
-    (= ingredient :milk)
-    true
-    (= ingredient :flour)
-    true
-    (= ingredient :sugar)
-    true
-    :else
-    false))
+(def scooped-ingredients #{:milk :flour :sugar})
 
+(defn scooped? [ingredient]
+  (contains? scooped-ingredients ingredient))
+
+(def squeezed-ingredients #{:egg})
 (defn squeezed? [ingredient]
-  (= ingredient :egg))
+  (contains? squeezed-ingredients ingredient))
+
+(def simple-ingredients #{:butter})
 
 (defn simple? [ingredient]
-  (= ingredient :butter))
+  (contains? simple-ingredients ingredient))
 
 (defn add-eggs [n]
   (dotimes [e n]
