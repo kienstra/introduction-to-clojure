@@ -130,10 +130,40 @@
 (defn from-pantry? [ingredient]
   (contains? pantry-ingredients ingredient))
 
+(defn fetch-from-pantry
+  ([ingredient]
+   (fetch-from-pantry ingredient 1))
+  ([ingredient amount]
+   (if
+     (from-pantry? ingredient)
+     (do
+       (go-to :pantry)
+       (dotimes [_ amount]
+         (load-up ingredient))
+       (go-to :prep-area)
+       (dotimes [_ amount]
+         (unload ingredient)))
+     (error (println ingredient "is not from the pantry")))))
+
 (def fridge-ingredients #{:milk :egg :butter})
 
 (defn from-fridge? [ingredient]
   (contains? fridge-ingredients ingredient))
+
+(defn fetch-from-fridge
+  ([ingredient]
+   (fetch-from-fridge ingredient 1))
+  ([ingredient amount]
+   (if
+    (from-fridge? ingredient)
+     (do
+       (go-to :fridge)
+       (dotimes [_ amount]
+         (load-up ingredient))
+       (go-to :prep-area)
+       (dotimes [_ amount]
+       (unload ingredient)))
+     (error (println ingredient "is not from the fridge")))))
 
 (defn bake-cake []
   (add :egg 2)
@@ -157,4 +187,7 @@
 
 (defn -main []
   (bake-cake)
-  (bake-cookies))
+  (bake-cookies)
+  (fetch-from-pantry :flour 12)
+  (fetch-from-fridge :egg 45)
+  (status))
