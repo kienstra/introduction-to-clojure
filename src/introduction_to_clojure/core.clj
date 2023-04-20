@@ -183,52 +183,40 @@
   (bake-pan 30)
   (cool-pan))
 
+
+(def food {:flour 10
+           :egg 4
+           :sugar 12
+           :milk 3
+           :butter 6})
+
+(defn load-up-amount [item amount]
+  (dotimes [_ amount]
+    (load-up item)))
+
+(defn unload-amount [item amount]
+  (dotimes [_ amount]
+    (unload item)))
+
+
+
+(defn fetch-list [shopping-list]
+  (go-to :fridge)
+  (doseq [[item amount] (select-keys shopping-list [:egg :milk :butter])]
+    (load-up-amount item amount))
+
+  (go-to :pantry)
+  (doseq [[item amount] (select-keys shopping-list [:flour :sugar])]
+    (load-up-amount item amount))
+
+  (go-to :prep-area)
+  (doseq [[item amount] (select-keys shopping-list [:sugar :flour])]
+    (unload-amount item amount)))
+
 (defn -main []
+  (fetch-list food)
   (bake-cake)
   (bake-cookies)
   (fetch-from-pantry :flour 12)
   (fetch-from-fridge :egg 45)
   (status))
-
-(def list {:flour 10
-           :egg 7
-           :sugar 12
-           :milk 3
-           :butter 6})
-
-(defn fetch-list [shopping-list]
-  (go-to :pantry)
-  (when (contains? shopping-list :flour)
-    (dotimes [_ (get shopping-list :flour)]
-      (load-up :flour)))
-  (when (contains? shopping-list :sugar)
-    (dotimes [_ (get shopping-list :sugar)]
-      (load-up :sugar)))
-
-  (go-to :fridge)
-  (when (contains? shopping-list :egg)
-    (dotimes [_ (get shopping-list :egg)]
-      (load-up :egg)))
-  (when (contains? shopping-list :milk)
-    (dotimes [_ (get shopping-list :milk)]
-      (load-up :milk)))
-  (when (contains? shopping-list :butter)
-    (dotimes [_ (get shopping-list :butter)]
-      (load-up :butter)))
-
-  (go-to :prep-area)
-  (when (contains? shopping-list :flour)
-    (dotimes [_ (get shopping-list :flour)]
-      (unload :flour)))
-  (when (contains? shopping-list :sugar)
-    (dotimes [_ (get shopping-list :sugar)]
-      (unload :sugar)))
-  (when (contains? shopping-list :egg)
-    (dotimes [_ (get shopping-list :egg)]
-      (unload :egg)))
-  (when (contains? shopping-list :milk)
-    (dotimes [_ (get shopping-list :milk)]
-      (unload :milk)))
-  (when (contains? shopping-list :butter)
-    (dotimes [_ (get shopping-list :butter)]
-      (unload :butter))))
