@@ -189,3 +189,46 @@
   (fetch-from-pantry :flour 12)
   (fetch-from-fridge :egg 45)
   (status))
+
+(def list {:flour 10
+           :egg 7
+           :sugar 12
+           :milk 3
+           :butter 6})
+
+(defn fetch-list [shopping-list]
+  (go-to :pantry)
+  (when (contains? shopping-list :flour)
+    (dotimes [_ (get shopping-list :flour)]
+      (load-up :flour)))
+  (when (contains? shopping-list :sugar)
+    (dotimes [_ (get shopping-list :sugar)]
+      (load-up :sugar)))
+
+  (go-to :fridge)
+  (when (contains? shopping-list :egg)
+    (dotimes [_ (get shopping-list :egg)]
+      (load-up :egg)))
+  (when (contains? shopping-list :milk)
+    (dotimes [_ (get shopping-list :milk)]
+      (load-up :milk)))
+  (when (contains? shopping-list :butter)
+    (dotimes [_ (get shopping-list :butter)]
+      (load-up :butter)))
+
+  (go-to :prep-area)
+  (when (contains? shopping-list :flour)
+    (dotimes [_ (get shopping-list :flour)]
+      (unload :flour)))
+  (when (contains? shopping-list :sugar)
+    (dotimes [_ (get shopping-list :sugar)]
+      (unload :sugar)))
+  (when (contains? shopping-list :egg)
+    (dotimes [_ (get shopping-list :egg)]
+      (unload :egg)))
+  (when (contains? shopping-list :milk)
+    (dotimes [_ (get shopping-list :milk)]
+      (unload :milk)))
+  (when (contains? shopping-list :butter)
+    (dotimes [_ (get shopping-list :butter)]
+      (unload :butter))))
