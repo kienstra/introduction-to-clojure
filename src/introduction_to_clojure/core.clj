@@ -183,35 +183,32 @@
   (bake-pan 30)
   (cool-pan))
 
-
 (def food {:flour 10
            :egg 4
            :sugar 12
            :milk 3
            :butter 6})
 
-(defn load-up-amount [item amount]
+(defn load-up-amount [ingredient amount]
   (dotimes [_ amount]
-    (load-up item)))
+    (load-up ingredient)))
 
-(defn unload-amount [item amount]
+(defn unload-amount [ingredient amount]
   (dotimes [_ amount]
-    (unload item)))
-
-
+    (unload ingredient)))
 
 (defn fetch-list [shopping-list]
   (go-to :fridge)
-  (doseq [[item amount] (select-keys shopping-list [:egg :milk :butter])]
-    (load-up-amount item amount))
+  (doseq [[ingredient amount] (select-keys shopping-list [:egg :milk :butter])]
+    (load-up-amount ingredient amount))
 
   (go-to :pantry)
-  (doseq [[item amount] (select-keys shopping-list [:flour :sugar])]
-    (load-up-amount item amount))
+  (doseq [[ingredient amount] (select-keys shopping-list [:flour :sugar])]
+    (load-up-amount ingredient amount))
 
   (go-to :prep-area)
-  (doseq [[item amount] (select-keys shopping-list [:sugar :flour])]
-    (unload-amount item amount)))
+  (doseq [[ingredient amount] (select-keys shopping-list [:sugar :flour])]
+    (unload-amount ingredient amount)))
 
 (defn -main []
   (fetch-list food)
