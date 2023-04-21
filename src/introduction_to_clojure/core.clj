@@ -199,8 +199,8 @@
       (load-up-amount ingredient (get shopping-list ingredient 0))))
 
   (go-to :prep-area)
-  (doseq [[_ ingredients] locations]
-    (doseq [ingredient ingredients]
+  (doseq [location (keys locations)]
+    (doseq [ingredient (get locations location)]
       (unload-amount ingredient (get shopping-list ingredient 0)))))
 
 (defn bake-cake []
