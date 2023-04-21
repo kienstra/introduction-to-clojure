@@ -177,6 +177,10 @@
       :else
       (error "I don't know where to get" ingredient))))
 
+(defn fetch-ingredients [ingredients]
+  (doseq [[ingredient amount] ingredients]
+    (fetch-ingredient ingredient amount)))
+
 (defn load-up-amount [ingredient amount]
   (dotimes [i amount]
     (load-up ingredient)))
@@ -185,22 +189,18 @@
   (dotimes [i amount]
     (unload ingredient)))
 
-(defn fetch-list [shopping-list]
-  (go-to :pantry)
-  (load-up-amount :flour (get shopping-list :flour 0))
-  (load-up-amount :sugar (get shopping-list :sugar 0))
+(def locations {:pantry pantry-ingredients
+                :fridge fridge-ingredients})
 
-  (go-to :fridge)
-  (load-up-amount :egg (get shopping-list :egg 0))
-  (load-up-amount :milk (get shopping-list :milk 0))
-  (load-up-amount :butter (get shopping-list :butter 0))
+(defn fetch-list [shopping-list]
+  (doseq [[location ingredients] locations]
+    (go-to location)
+    (doseq [[ingredient amount] (select-keys shopping-list ingredients)]
+      (load-up-amount ingredient amount)))
 
   (go-to :prep-area)
-  (unload-amount :flour (get shopping-list :flour 0))
-  (unload-amount :sugar (get shopping-list :sugar 0))
-  (unload-amount :egg (get shopping-list :egg 0))
-  (unload-amount :milk (get shopping-list :milk 0))
-  (unload-amount :butter (get shopping-list :butter 0)))
+  (doseq [[igredient amount] shopping-list]
+    (unload-amount igredient amount)))
 
 (defn bake-cake []
   (add :egg 2)
@@ -225,8 +225,8 @@
 (defn -main []
   (bake-cake)
   (bake-cookies)
-  (fetch-ingredient :flour 23)
-  (fetch-ingredient :sugar 56)
-  (fetch-ingredient :milk 10)
-  (fetch-ingredient :egg 90)
+  (fetch-list {:flour 23
+               :sugar 23
+               :milk 10
+               :egg 90})
   (status))
