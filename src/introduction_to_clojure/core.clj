@@ -193,10 +193,10 @@
                 :fridge fridge-ingredients})
 
 (defn fetch-list [shopping-list]
-  (doseq [[location ingredients] locations]
+  (doseq [[location] locations]
     (go-to location)
-    (doseq [[ingredient amount] (select-keys shopping-list ingredients)]
-      (load-up-amount ingredient amount)))
+    (doseq [ingredient (get locations location)]
+      (load-up-amount ingredient (get shopping-list ingredient 0))))
 
   (go-to :prep-area)
   (doseq [[igredient amount] shopping-list]
