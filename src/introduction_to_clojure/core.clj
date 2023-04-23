@@ -223,8 +223,9 @@
   (merge-with + a b))
 
 (defn multiply-ingredients [multiple ingredients]
-  (for [[ingredient amount] ingredients]
-    [ingredient (* multiple amount)]))
+  (map (fn [[ingredient amount]]
+            [ingredient (* multiple amount)])
+          ingredients))
 
 (defn day-at-the-bakery []
   (doseq [order (get-morning-orders)]
