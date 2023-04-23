@@ -219,6 +219,13 @@
   (bake-pan 30)
   (cool-pan))
 
+(defn add-ingredients [a b]
+  (merge-with + a b))
+
+(defn multiply-ingredients [multiple ingredients]
+  (for [[ingredient amount] ingredients]
+    [ingredient (* multiple amount)]))
+
 (defn day-at-the-bakery []
   (doseq [order (get-morning-orders)]
     (let [items (get order :items)]
