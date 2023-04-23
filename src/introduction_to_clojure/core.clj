@@ -219,35 +219,36 @@
   (bake-pan 30)
   (cool-pan))
 
-(defn bake-item [type amount]
-  (cond
-    (= type :cake) (dotimes [_ amount] 
-                     (let [rack-id (bake-cake)]
-                       (deliver {
-                                 
-                       })
-                       )
-    (= type :cookies) (dotimes [_ amount] bake-cookies)
-    :else (error (println "type should be either :cake or :cookies, it was" :type))))
-
-(defn bake-items [items]
-  (map bake-item items))
-
-(defn get-receipts []
-  {:orderid 123
-   :address "323 Robot Ln"
-   :rackids [:cooling-rack-324
-             :cooling-rack-325
-             :cooling-rack-326]})
-(defn handle-order [order]
-  (bake-items (get order :items)))
-
-; Get the orders
-; Bake items
-; Send receipts to the delivery bot
 (defn day-at-the-bakery []
-  (let [orders (get-morning-orders)]
-    (map handle-order orders)))
+  (doseq [order (get-morning-orders)]
+      (doseq [[type amount] (get order :items)]
+        (cond
+          (= type :cake) (dotimes [_ amount] 
+                           (fetch-list {
+                                        :egg 2
+                                        :flour 2
+                                        :milk 1
+                                        :sugar 1
+                           })
+                           (let [rack-id (bake-cake)]
+                             (delivery {
+                                        :orderid (get order :orderid)
+                                        :address (get order :address)
+                                        :rackids [rack-id]
+                                        })))
+          (= type :cookies) (dotimes [_ amount]
+                              (fetch-list {
+                                           :egg 1
+                                           :flour 1
+                                           :butter 1
+                                           :sugar 1
+                              })
+                           (let [rack-id (bake-cookies)]
+                             (delivery {:orderid (get order :orderid)
+                                        :address (get order :address)
+                                        :rackids [rack-id]
+                                        })))
+                           :else (error (println "type should be either :cake or :cookies, it was" :type))))))
 
 (defn -main []
   (day-at-the-bakery)
