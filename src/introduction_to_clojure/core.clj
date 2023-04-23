@@ -219,11 +219,36 @@
   (bake-pan 30)
   (cool-pan))
 
+(defn bake-item [type amount]
+  (cond
+    (= type :cake) (dotimes [_ amount] 
+                     (let [rack-id (bake-cake)]
+                       (deliver {
+                                 
+                       })
+                       )
+    (= type :cookies) (dotimes [_ amount] bake-cookies)
+    :else (error (println "type should be either :cake or :cookies, it was" :type))))
+
+(defn bake-items [items]
+  (map bake-item items))
+
+(defn get-receipts []
+  {:orderid 123
+   :address "323 Robot Ln"
+   :rackids [:cooling-rack-324
+             :cooling-rack-325
+             :cooling-rack-326]})
+(defn handle-order [order]
+  (bake-items (get order :items)))
+
+; Get the orders
+; Bake items
+; Send receipts to the delivery bot
+(defn day-at-the-bakery []
+  (let [orders (get-morning-orders)]
+    (map handle-order orders)))
+
 (defn -main []
-  (bake-cake)
-  (bake-cookies)
-  (fetch-ingredient :flour 23)
-  (fetch-ingredient :sugar 56)
-  (fetch-ingredient :milk 10)
-  (fetch-ingredient :egg 90)
+  (day-at-the-bakery)
   (status))
