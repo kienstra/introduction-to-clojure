@@ -220,11 +220,19 @@
   (cool-pan))
 
 (defn add-ingredients [a b]
-  (merge-with + a b))
+  (merge-with add a b))
 
 (defn multiply-ingredients [multiple ingredients]
-  (for [[ingredient amount] ingredients]
-    [ingredient (* multiple amount)]))
+  (map (fn [[ingredient amount]]
+            [ingredient (* multiple amount)])
+          ingredients))
+
+(defn order->ingredients [order])
+
+(defn orders->ingredients [orders]
+    (reduce add-ingredients {}
+            (for [order orders]
+              (order->ingredients order))))
 
 (defn day-at-the-bakery []
   (doseq [order (get-morning-orders)]
