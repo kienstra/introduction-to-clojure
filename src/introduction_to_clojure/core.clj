@@ -191,20 +191,40 @@
     (for [order orders]
       (order->ingredients order))))
 
+(defn perform [ingredients step]
+  (cond
+    (= :mix (first step))
+    (mix)
+    (= :pour (first step))
+    (pour-into-pan)
+    (= :bake (first step))
+    (bake-pan (second step))
+    (= :cool (first step))
+    (cool-pan)
+    (= :add (first step))
+    (cond
+      (and (= 2 (count step))
+           (= :all step))
+      (doseq [kv ingredients]
+        (add (first kv) (second kv)))
+      (and (= 2 (count step))
+           (contains? ingredients (second step)))
+      (add (second step) (get ingredients (second step)))
+      (= 3 (count step))
+      (add (second step) (get step 2))
+      :else 
+      (error "I don't know how to add" (second step)))
+    :else 
+    (error "I don't know how to" (first step))))
+
 (defn prepare [ingredients steps]
   (doseq [step steps]
-    (cond
-      (= :add step)
-      (doseq [[ingredient amount] ingredients]
-        (add ingredient amount))
-      (= :mix step)
-      (mix)
-      (= :pour step)
-      (pour-into-pan)
-      (= :bake step)
-      (bake)
-      (= :cool step)
-      (cool-pan))))
+    (perform ingredients step)))
+
+(defn bake-recipe [recipe]
+  (last
+   (for [step (get recipe :steps)]
+     (perform (get recipe :ingredients) step))))
 
 (defn bake-cake []
   (add :egg 2)
@@ -243,15 +263,8 @@
   (cool-pan))
 
 (defn bake [item]
-  (cond
-    (= item :cake)
-    (bake-cake)
-    (= item :cookies)
-    (bake-cookies)
-    (= item :brownies)
-    (bake-brownies)
-    :else
-    (error "I don't know how to bake" item)))
+  (let [recipes (get baking :recipes)]
+    (bake-recipe (get recipes item))))
 
 (defn day-at-the-bakery []
   (let [orders (get-morning-orders-day3)
