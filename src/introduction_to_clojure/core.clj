@@ -187,16 +187,21 @@
 (def locations {:pantry pantry-ingredients
                 :fridge fridge-ingredients})
 
-(defn fetch-list [shopping-list]
-  (doseq [location (keys locations)]
-    (go-to location)
-    (doseq [ingredient (get locations location)]
-      (load-up-amount ingredient (get shopping-list ingredient 0))))
+(defn storage-location [item-amount]
+  (let [ingredients (get baking :ingredients)
+        info (get ingredients (first item-amount))]
+    (get info :storage)))
 
-  (go-to :prep-area)
-  (doseq [location (keys locations)]
-    (doseq [ingredient (get locations location)]
-      (unload-amount ingredient (get shopping-list ingredient 0)))))
+; Example ingredients: {:egg 595, :flour 595, :sugar 369, :milk 226, :butter 393, :cocoa 250}
+(defn fetch-list [shopping]
+  (let [by-location (group-by storage-location shopping)]
+    (doseq [loc by-location]
+      (go-to (first loc))
+      (doseq [item-amount (second loc)]
+        (load-up-amount (first item-amount) (second item-amount)))
+      (go-to :prep-area)
+      (doseq [item-amount (second loc)]
+        (unload-amount (first item-amount) (second item-amount))))))
 
 (defn add-ingredients [a b]
   (merge-with + a b))
