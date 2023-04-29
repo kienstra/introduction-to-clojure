@@ -53,20 +53,14 @@
                             :cocoa {:storage :pantry
                                     :usage :scooped}}})
 
-(def scooped-ingredients #{:flour :sugar :milk :cocoa})
-
 (defn scooped? [ingredient]
-  (contains? scooped-ingredients ingredient))
-
-(def squeezed-ingredients #{:egg})
+  (= :scooped (get ingredient :usage)))
 
 (defn squeezed? [ingredient]
-  (contains? squeezed-ingredients ingredient))
-
-(def simple-ingredients #{:butter})
+  (= :squeezed (get ingredient :usage)))
 
 (defn simple? [ingredient]
-  (contains? simple-ingredients ingredient))
+  (= :simple (get ingredient :usage)))
 
 (defn add-squeezed
   ([ingredient amount]
