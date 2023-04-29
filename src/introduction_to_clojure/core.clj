@@ -53,20 +53,14 @@
                             :cocoa {:storage :pantry
                                     :usage :scooped}}})
 
-(defn scooped? [ingredient-name]
-  (let [ingredients (get baking :ingredients)
-        ingredient (get ingredients ingredient-name)]
-  (= :scooped (get ingredient :usage))))
+(defn scooped? [ingredient]
+  (= :scooped (:usage (ingredient (:ingredients baking)))))
 
-(defn squeezed? [ingredient-name]
-  (let [ingredients (get baking :ingredients)
-        ingredient (get ingredients ingredient-name)]
-    (= :squeezed? (get ingredient :usage))))
+(defn squeezed? [ingredient]
+  (= :squeezed (:usage (ingredient (:ingredients baking)))))
 
-(defn simple? [ingredient-name]
-  (let [ingredients (get baking :ingredients)
-        ingredient (get ingredients ingredient-name)]
-    (= :simple (get ingredient :usage))))
+(defn simple? [ingredient]
+  (= :simple (:usage (ingredient (:ingredients baking)))))
 
 (defn add-squeezed
   ([ingredient amount]
