@@ -188,20 +188,19 @@
                 :fridge fridge-ingredients})
 
 (defn storage-location [item-amount]
-  (let [ingredients (get baking :ingredients)
-        info (get ingredients (first item-amount))]
-    (get info :storage)))
+  (let [[item _] item-amount]
+    (:storage (item (:ingredients baking)))))
 
 ; Example ingredients: {:egg 595, :flour 595, :sugar 369, :milk 226, :butter 393, :cocoa 250}
 (defn fetch-list [shopping]
   (let [by-location (group-by storage-location shopping)]
     (doseq [loc by-location]
       (go-to (first loc))
-      (doseq [item-amount (second loc)]
-        (load-up-amount (first item-amount) (second item-amount)))
+      (doseq [[item amount] (second loc)]
+        (load-up-amount item amount))
       (go-to :prep-area)
-      (doseq [item-amount (second loc)]
-        (unload-amount (first item-amount) (second item-amount))))))
+      (doseq [[item amount] (second loc)]
+        (unload-amount item amount)))))
 
 (defn add-ingredients [a b]
   (merge-with + a b))
